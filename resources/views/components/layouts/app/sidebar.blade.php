@@ -21,7 +21,7 @@
 
             <flux:navlist variant="outline">
                 @if (app()->isLocal())
-                    <flux:navlist.item icon="folder-git-2" href="https://github.com/lcamero/laravel-starter-kit" target="_blank">
+                    <flux:navlist.item icon="folder-git-2" href="https://github.com/lcamero/saas-kit" target="_blank">
                     {{ __('Repository') }}
                     </flux:navlist.item>
 
