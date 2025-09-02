@@ -11,7 +11,7 @@
                 <nav class="flex items-center justify-end gap-4">
                     @auth
                         <a
-                            href="{{ url('/dashboard') }}"
+                            href="{{ route('dashboard') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                         >
                             Dashboard
@@ -36,7 +36,7 @@
             @endif
         </header>
         <div class="w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 font-light dark:text-white max-w-4xl mx-auto space-y-10">
-            <img src="{{ asset('starter-kit.png') }}" class="w-1/3 sm:w-1/5 max-w-xl mx-auto" />
+            <img src="{{ global_asset('starter-kit.png') }}" class="w-1/3 sm:w-1/5 max-w-xl mx-auto" />
             <article class="markdown-body dark:text-white! dark:bg-black!">
                 {!! $readme !!}
             </article>

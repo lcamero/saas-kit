@@ -14,11 +14,21 @@ class VerifyEmailController extends Controller
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+            return redirect()->intended($this->getDashboardRoute().'?verified=1');
         }
 
         $request->fulfill();
 
-        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        return redirect()->intended($this->getDashboardRoute().'?verified=1');
+    }
+
+    protected function getDashboardRoute(): string
+    {
+        // Check if we're in a tenant context
+        if (tenancy()->initialized) {
+            return route('tenant.dashboard', absolute: false);
+        }
+
+        return route('dashboard', absolute: false);
     }
 }

@@ -72,6 +72,20 @@ return [
             'after_commit' => false,
         ],
 
+        // Per TenancyForLaravel Package Docs
+        // We can use this connection on central jobs to make sure they run centrally under all circumstances
+        // https://tenancyforlaravel.com/docs/v3/queues/
+        // dispatch(new SomeJob(...))->onConnection('central');
+        'central' => [
+            'driver' => 'redis',
+            'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
+            'queue' => env('REDIS_QUEUE', 'default'),
+            'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 90),
+            'block_for' => null,
+            'after_commit' => false,
+            'central' => true,
+        ],
+
     ],
 
     /*

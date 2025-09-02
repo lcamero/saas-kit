@@ -15,6 +15,9 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
+                <flux:navlist.item icon="square-3-stack-3d" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>
+                    {{ __('Tenants') }}
+                </flux:navlist.item>
             </flux:navbar>
 
             <flux:spacer />
@@ -93,9 +96,6 @@
                         @if (Route::has('telescope') && config('telescope.enabled'))
                         <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('Telescope') }}</flux:menu.item>
                         @endif
-                        @if (Route::has('pulse') && config('pulse.enabled'))
-                        <flux:menu.item :href="route('pulse')" target="_blank" icon="heart">{{ __('Pulse') }}</flux:menu.item>
-                        @endif
                     </flux:menu.radio.group>
                     
                     <flux:menu.separator />
@@ -122,6 +122,9 @@
                 <flux:navlist.group :heading="__('Platform')">
                     <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="square-3-stack-3d" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>
+                        {{ __('Tenants') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

@@ -4,32 +4,39 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+        <flux:sidebar sticky collapsible class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+            <flux:sidebar.header>
+                <flux:sidebar.brand
+                    href="{{ route('dashboard') }}"
+                    name="{{ config('app.name') }}"
+                >
+                    <x-slot name="logo">
+                        <div class="flex aspect-square size-6 p-1 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
+                            <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
+                        </div>
+                    </x-slot>
+                </flux:sidebar.brand>
+                <flux:sidebar.collapse class="in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-mr-2" />
+            </flux:sidebar.header>
 
-            <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-                <x-app-logo />
-            </a>
+            <flux:sidebar.nav>
+                <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:sidebar.item>
+                <flux:sidebar.item icon="square-3-stack-3d" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>{{ __('Tenants') }}</flux:sidebar.item>
+            </flux:sidebar.nav>
 
-            <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                </flux:navlist.group>
-            </flux:navlist>
+            <flux:sidebar.spacer />
 
-            <flux:spacer />
-
-            <flux:navlist variant="outline">
+            <flux:sidebar.nav>
                 @if (app()->isLocal())
-                    <flux:navlist.item icon="folder-git-2" href="https://github.com/lcamero/saas-kit" target="_blank">
+                    <flux:sidebar.item icon="folder-git-2" href="https://github.com/lcamero/saas-kit" target="_blank">
                     {{ __('Repository') }}
-                    </flux:navlist.item>
+                    </flux:sidebar.item>
 
-                    <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs" target="_blank">
+                    <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs" target="_blank">
                     {{ __('Documentation') }}
-                    </flux:navlist.item>
+                    </flux:sidebar.item>
                 @endif
-            </flux:navlist>
+            </flux:sidebar.nav>
 
             <!-- Desktop User Menu -->
             <flux:dropdown class="hidden lg:block" position="bottom" align="start">
@@ -82,9 +89,6 @@
                         @endif
                         @if (Route::has('telescope') && config('telescope.enabled'))
                         <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('Telescope') }}</flux:menu.item>
-                        @endif
-                        @if (Route::has('pulse') && config('pulse.enabled'))
-                        <flux:menu.item :href="route('pulse')" target="_blank" icon="heart">{{ __('Pulse') }}</flux:menu.item>
                         @endif
                     </flux:menu.radio.group>
 
@@ -155,9 +159,6 @@
                         @endif
                         @if (Route::has('telescope') && config('telescope.enabled'))
                         <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('Telescope') }}</flux:menu.item>
-                        @endif
-                        @if (Route::has('pulse') && config('pulse.enabled'))
-                        <flux:menu.item :href="route('pulse')" target="_blank" icon="heart">{{ __('Pulse') }}</flux:menu.item>
                         @endif
                     </flux:menu.radio.group>
 

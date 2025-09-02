@@ -8,6 +8,14 @@ class SocialiteController extends Controller
 {
     public function __invoke(string $provider)
     {
-        return Socialite::driver($provider)->redirect();
+        $tenant = tenant();
+
+        return Socialite::driver($provider)
+            ->stateless()
+            ->with(['state' => base64_encode(json_encode([
+                'tenant' => $tenant?->id,
+                'redirect' => config('app.url'),
+            ]))])
+            ->redirect();
     }
 }

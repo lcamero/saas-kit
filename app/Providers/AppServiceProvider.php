@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,9 +29,10 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(! app()->isProduction());
         Model::automaticallyEagerLoadRelationships();
 
-        Gate::define('viewPulse', function (User $user) {
-            return true;
-            // return $user->isAdmin();
+        RedirectIfAuthenticated::redirectUsing(function (Request $request) {
+            return tenant()
+                ? route('tenant.dashboard')
+                : route('dashboard');
         });
     }
 }
