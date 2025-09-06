@@ -89,9 +89,10 @@ class TenancyServiceProvider extends ServiceProvider
 
                     config(['auth.defaults.guard' => 'tenant']);
                     config(['app.url' => $scheme.$host]);
-                    config(['app.name' => tenant()->name]);
+                    config(['app.name' => app(\App\Settings\Tenant\GeneralSettings::class)->application_name]);
 
                     config(['scout.prefix' => 'tenant_'.tenant('id')]);
+                    config(['settings.cache.prefix' => 'tenant_'.tenant('id')]);
                 },
             ],
 

@@ -22,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->group('universal', []);
+
+        $middleware->prepend(\App\Http\Middleware\SetApplicationSettings::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {

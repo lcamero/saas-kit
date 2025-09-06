@@ -43,8 +43,6 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
 }; ?>
 
 <section class="w-full">
-    @include('tenant.partials.settings-heading')
-
     <x-tenant.settings.layout heading="{{ __('Authentication') }}" subheading="{{ __('Manage your account password.') }}">
         <div class="space-y-12">
             {{-- Password Section --}}

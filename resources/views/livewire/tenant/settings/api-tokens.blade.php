@@ -69,8 +69,6 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
 }; ?>
 
 <section class="w-full">
-    @include('tenant.partials.settings-heading')
-
     <x-tenant.settings.layout :heading="__('API Tokens')" :subheading="__('Manage API tokens for your account.')">
         @if (Sanctum::apiTokensEnabled())
         <div class="my-6 w-full space-y-6">
@@ -78,7 +76,7 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
                 <flux:heading level="3">{{ __('Create API Token') }}</flux:heading>
             </div>
 
-            <div class="grid grid-cols-1 gap-y-6 bg-zinc-100 dark:bg-zinc-700 p-4 rounded-md">
+            <div class="grid grid-cols-1 gap-y-6">
                 <flux:input wire:model="tokenName" :label="__('Token Name')" type="text" required />
 
                 @if (Sanctum::getPermissions())

@@ -29,8 +29,12 @@ Route::middleware([
             return view('tenant.dashboard');
         })->name('dashboard');
 
-        Route::redirect('settings', 'settings/profile');
+        Route::redirect('settings', 'settings/general');
 
+        // General settings
+        Volt::route('settings/general', 'tenant.settings.general')->name('settings.general');
+
+        // Personal preferences
         Volt::route('settings/profile', 'tenant.settings.profile')->name('settings.profile');
         Volt::route('settings/authentication', 'tenant.settings.authentication')->name('settings.authentication');
         Volt::route('settings/api-tokens', 'tenant.settings.api-tokens')->name('settings.api-tokens');

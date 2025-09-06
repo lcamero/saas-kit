@@ -8,7 +8,7 @@
             <flux:sidebar.header>
                 <flux:sidebar.brand
                     href="{{ route('tenant.dashboard') }}"
-                    name="{{ tenant()->name }}"
+                    name="{{ config('app.name') }}"
                 >
                     <x-slot name="logo">
                         <div class="flex aspect-square size-6 p-1 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
@@ -19,13 +19,16 @@
                 <flux:sidebar.collapse class="in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-mr-2" />
             </flux:sidebar.header>
 
-            <flux:sidebar.nav variant="outline">
+            <flux:sidebar.nav>
                 <flux:sidebar.item icon="home" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:sidebar.item>
             </flux:sidebar.nav>
 
             <flux:sidebar.spacer />
 
-            <flux:sidebar.nav variant="outline">
+            <flux:sidebar.nav>
+                <flux:sidebar.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
+                    {{ __('Configuration') }}
+                </flux:sidebar.item>
             </flux:sidebar.nav>
 
             <!-- Desktop User Menu -->
@@ -68,7 +71,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('tenant.settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('tenant.settings.profile')" icon="cog" wire:navigate>{{ __('Preferences') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -127,7 +130,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('tenant.settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('tenant.settings.profile')" icon="cog" wire:navigate>{{ __('Preferences') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
