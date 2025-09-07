@@ -14,7 +14,7 @@ class SocialiteController extends Controller
             ->stateless()
             ->with(['state' => base64_encode(json_encode([
                 'tenant' => $tenant?->id,
-                'redirect' => config('app.url'),
+                'redirect' => $tenant?->url,
             ]))])
             ->redirect();
     }

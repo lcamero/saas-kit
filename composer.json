@@ -23,6 +23,7 @@
         "livewire/flux-pro": "^2.2",
         "livewire/volt": "^1.7.0",
         "saloonphp/saloon": "^3.0",
+        "spatie/laravel-permission": "^6.21",
         "spatie/laravel-settings": "^3.4",
         "stancl/tenancy": "^3.9"
     },

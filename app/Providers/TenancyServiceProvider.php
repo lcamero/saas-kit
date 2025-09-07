@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
@@ -79,30 +81,41 @@ class TenancyServiceProvider extends ServiceProvider
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
-
-                function (Events\TenancyInitialized $event) {
-                    // Include port if using non-standard. Helps with custom ports or localhost systems
-                    $host = request()->getHttpHost();
-
-                    // Build proper scheme + host
-                    $scheme = request()->isSecure() ? 'https://' : 'http://';
-
-                    config(['auth.defaults.guard' => 'tenant']);
-                    config(['app.url' => $scheme.$host]);
-                    config(['app.name' => app(\App\Settings\Tenant\GeneralSettings::class)->application_name]);
-
-                    config(['scout.prefix' => 'tenant_'.tenant('id')]);
-                    config(['settings.cache.prefix' => 'tenant_'.tenant('id')]);
-                },
             ],
 
             Events\EndingTenancy::class => [],
             Events\TenancyEnded::class => [
                 Listeners\RevertToCentralContext::class,
+
+                function (Events\TenancyEnded $event) {
+                    $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
+                    $permissionRegistrar->cacheKey = 'spatie.permission.cache';
+                },
             ],
 
             Events\BootstrappingTenancy::class => [],
-            Events\TenancyBootstrapped::class => [],
+            Events\TenancyBootstrapped::class => [
+                function (Events\TenancyBootstrapped $event) {
+                    config(['auth.defaults.guard' => 'tenant']);
+
+                    // Mostly when provisioning, the settings db does not exist yet
+                    try {
+                        config(['app.name' => app(\App\Settings\Tenant\GeneralSettings::class)->application_name]);
+                    } catch (\Exception $e) {
+                        config(['app.name' => tenant()->name]);
+                    }
+
+                    config(['scout.prefix' => 'tenant_'.tenant('id')]);
+                    config(['settings.cache.prefix' => 'tenant_'.tenant('id')]);
+
+                    $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
+                    $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->getTenantKey();
+
+                    RedirectIfAuthenticated::redirectUsing(function (Request $request) {
+                        return route('tenant.dashboard');
+                    });
+                },
+            ],
             Events\RevertingToCentralContext::class => [],
             Events\RevertedToCentralContext::class => [],
 

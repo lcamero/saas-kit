@@ -2,7 +2,7 @@
 
 namespace App\Models\Tenant;
 
-use App\Notifications\TenantVerifyEmail;
+use App\Notifications\Tenant\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,13 +10,22 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\TenantUserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, Searchable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, Searchable;
 
     protected $connection = 'tenant'; // tenancy will swap this automatically
+
+    // To force Spatie's laravel permission guard usage
+    protected string $guard_name = 'tenant';
+
+    protected function getDefaultGuardName(): string
+    {
+        return $this->guard_name;
+    }
 
     /**
      * Send the email verification notification.
@@ -25,7 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new TenantVerifyEmail);
+        $this->notify(new VerifyEmail);
     }
 
     /**

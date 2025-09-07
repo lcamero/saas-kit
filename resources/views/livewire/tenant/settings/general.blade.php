@@ -16,6 +16,8 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
      */
     public function mount(GeneralSettings $generalSettings): void
     {
+        $this->authorize(\App\Enums\Tenant\Permission::ManageApplicationSettings);
+
         $this->application_name = $generalSettings->application_name;
     }
 

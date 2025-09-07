@@ -21,7 +21,14 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:sidebar.item>
+                @can(\App\Enums\Permission::ManageTenants)
                 <flux:sidebar.item icon="square-3-stack-3d" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>{{ __('Tenants') }}</flux:sidebar.item>
+                @endcan
+                @can(\App\Enums\Permission::ManageApplicationUsers)
+                <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>
+                    {{ __('Users') }}
+                </flux:sidebar.item>
+                @endcan
             </flux:sidebar.nav>
 
             <flux:sidebar.spacer />
@@ -36,9 +43,11 @@
                     {{ __('Documentation') }}
                     </flux:sidebar.item>
                 @endif
+                @can(\App\Enums\Permission::ManageApplicationSettings)
                 <flux:sidebar.item icon="wrench-screwdriver" :href="route('settings.general')" :current="request()->routeIs('settings.general')" wire:navigate>
                     {{ __('Configuration') }}
                 </flux:sidebar.item>
+                @endcan
             </flux:sidebar.nav>
 
             <!-- Desktop User Menu -->

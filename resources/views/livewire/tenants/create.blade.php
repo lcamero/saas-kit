@@ -15,6 +15,11 @@ new class extends Component {
     #[Validate('required|string|max:255|unique:domains,domain')]
     public string $domain = '';
 
+    public function mount()
+    {
+        $this->authorize(\App\Enums\Tenant\Permission::ManageApplicationUsers);
+    }
+
     public function create(): void
     {
         $this->validate();
@@ -36,8 +41,6 @@ new class extends Component {
         <div class="space-y-12">
             <flux:heading size="xl">{{ __('Create Tenant') }}</flux:heading>
             <flux:card class="w-full lg:w-4/5">
-                <flux:fieldset>
-            
                 <div class="grid grid-cols-2 gap-y-6">
                     <flux:input :label="__('Name')" wire:model="name" class="max-w-sm" required :badge="__('Required')" />
                     <flux:input :label="__('Email')" wire:model="email" class="max-w-sm" type="email" required :badge="__('Required')" />
@@ -50,7 +53,6 @@ new class extends Component {
                         <flux:error name="domain" />
                     </flux:field>
                 </div>
-            </flux:fieldset>
             </flux:card>
 
             <flux:button type="submit" variant="primary">

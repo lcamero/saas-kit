@@ -23,9 +23,16 @@
                 <flux:navbar.item icon="layout-grid" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
+                @can(\App\Enums\Tenant\Permission::ManageApplicationUsers)
+                <flux:navbar.item icon="users" :href="route('tenant.users.index')" :current="request()->routeIs('tenant.users.*')" wire:navigate>
+                    {{ __('Users') }}
+                </flux:navbar.item>
+                @endcan
+                @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
                 <flux:navbar.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
                     {{ __('Configuration') }}
                 </flux:navbar.item>
+                @endcan
             </flux:navbar>
 
             <flux:spacer />
@@ -104,15 +111,22 @@
                     <flux:navlist.item icon="layout-grid" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                     </flux:navlist.item>
+                    @can(\App\Enums\Tenant\Permission::ManageApplicationUsers)
+                    <flux:navlist.item icon="users" :href="route('tenant.users.index')" :current="request()->routeIs('tenant.users.*')" wire:navigate>
+                        {{ __('Users') }}
+                    </flux:navlist.item>
+                    @endcan
                 </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
 
             <flux:navlist variant="outline">
-                <flux:navbar.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
+                @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
+                <flux:navlist.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
                     {{ __('Configuration') }}
-                </flux:navbar.item>
+                </flux:navlist.item>
+                @endcan
             </flux:navlist>
         </flux:sidebar>
 

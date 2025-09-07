@@ -26,6 +26,12 @@ You will be asked if you wish to install a Flux UI pro license after the project
 php artisan flux:activate
 ```
 
+Run migrations with
+
+```bash
+php artisan migrate
+```
+
 Lastly, a quick way to fire up the configured services and start building is to run the following command:
 
 ```bash
@@ -43,6 +49,7 @@ For the time being you may reference the base setup in base kit documentation [S
 ### Current Differences from base Starter Kit
 
 - Removed [Laravel Pulse][https://laravel.com/docs/12.x/pulse]. This package is removed from the installation as it provides less value out of the box in the multi-tenant model this kit uses. Some configuration changes can be applied to resolve users per tenant and show the information in the cards, but it is probably more work to get everything setup properly than the use it'll get at the moment. Also, other tools can be used to track performance and usage
+- In relation to [Spatie Laravel Permission](https://github.com/spatie/laravel-permission), the main difference is that on tenant creation, the administrator account is created with a random password instead of a static one. This is meant to be used along with user impersonation, so for the most part the password does not need to be known. The central app does get an administrator account with a known password.
 
 ## Packages
 
@@ -88,6 +95,12 @@ An independent `\App\Models\Tenant\User` class is configured to manage the users
 They are almost identical other than some tweaks around the database connection, Laravel Scout specific configuration, etc.
 
 A separate model will allow you to specify logic relevant to the tenant users and keep it separate from the central implementation. Think of scopes, attributes, relationships, etc., that could be different in both contexts.
+
+###### User Impersonation
+
+The user impersonation feature is enabled and configured to allow users in the central app to log into the tenants.
+
+This works along with a preconfigured CentralAdministrator account that gets provisioned by default on all tenants. It gets created with the base permissions by using the [Spatie Laravel Permission](https://github.com/spatie/laravel-permission) package to configure and verify roles and permissions.
 
 ###### Integration with Laravel Scout
 

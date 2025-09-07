@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Tenant;
 
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class TenantVerifyEmail extends VerifyEmailBase
+class VerifyEmail extends VerifyEmailBase
 {
     /**
      * Get the verification URL for the given notifiable.

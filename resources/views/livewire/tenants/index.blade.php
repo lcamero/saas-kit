@@ -12,6 +12,12 @@ new class extends Component {
     public $search = '';
 
     public ?string $tenantToDelete = null;
+    public ?string $tenantLoginEmail = null;
+
+    public function mount()
+    {
+        $this->authorize(\App\Enums\Tenant\Permission::ManageApplicationUsers);
+    }
 
     #[Computed]
     public function tenants()
@@ -40,6 +46,30 @@ new class extends Component {
         
         $this->redirect(route('tenants.index'), navigate: true);
     }
+
+    public function tenantLogin(string $tenantId)
+    {
+        $tenant = Tenant::findOrFail($tenantId);
+        $email = $this->tenantLoginEmail;
+
+        $userId = null;
+        $tenant->run(function () use (&$userId, $email) {
+            $userId = $email
+                ? \App\Models\Tenant\User::where('email', $email)->first()?->id
+                : \App\Models\Tenant\User::role(\App\Enums\Tenant\Role::CentralAdministrator->value)->first()?->id;
+        });
+
+        if (!$userId) {
+            Flux::toast(__('No user id found to login with'), variant: 'danger');
+            return;
+        }
+
+        // On provisioned systems, administrator account is always the first one.
+        $redirectUrl = '/dashboard';
+        $token = tenancy()->impersonate($tenant, $userId, $redirectUrl, 'tenant');
+
+        $this->dispatch('open-in-new-tab', url: $tenant->url.'/impersonate/'.$token->token);
+    }
 }; ?>
 
 <div>
@@ -53,9 +83,9 @@ new class extends Component {
         <flux:separator variant="subtle" />
     </div>
 
-    <flux:input icon="magnifying-glass" size="sm" :placeholder="__('Search')" wire:model.live="search" class="max-w-xs mb-6" />
+    <flux:input icon="magnifying-glass" size="sm" :placeholder="__('Search')" wire:model.live.debounce.300ms="search" class="max-w-xs mb-6" />
 
-    <flux:card class="w-full lg:w-4/5">
+    <flux:card class="w-full">
         <flux:table :paginate="$this->tenants">
             <flux:table.columns>
                 <flux:table.column>{{ __('Name') }}</flux:table.column>
@@ -70,11 +100,20 @@ new class extends Component {
                         <flux:table.cell class="whitespace-nowrap">{{ $tenant->email }}</flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">{{ $tenant->created_at }}</flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">
-                            <flux:tooltip :content="$tenant->url" position="right">
-                                <flux:button :href="$tenant->url" target="_blank" icon:trailing="arrow-up-right" size="sm">
-                                    {{ __('Visit') }}
-                                </flux:button>
-                            </flux:tooltip>
+                            <flux:button.group>
+                                <flux:tooltip :content="$tenant->url" position="top">
+                                    <flux:button wire:click="tenantLogin('{{ $tenant->id }}')" icon:trailing="arrow-up-right" size="sm">
+                                        {{ __('Login') }}
+                                    </flux:button>
+                                </flux:tooltip>
+                                <flux:dropdown align="left">
+                                    <flux:button icon="chevron-down" size="sm">
+                                    </flux:button>
+                                    <flux:popover class="w-72">
+                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('Optionally log in as a specific account')" :placeholder="__('admin@example.com')" type="email" size="sm" clearable />
+                                    </flux:popover>
+                                </flux:dropdown>
+                            </flux:button.group>
                         </flux:table.cell>
     
                         <flux:table.cell>
@@ -117,3 +156,10 @@ new class extends Component {
         </form>
     </flux:modal>
 </div>
+@script
+<script>
+    $wire.on('open-in-new-tab', ({ url }) => {
+        window.open(url, '_blank');
+    });
+</script>
+@endscript

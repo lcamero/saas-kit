@@ -21,14 +21,21 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.item icon="home" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:sidebar.item>
+                @can(\App\Enums\Tenant\Permission::ManageApplicationUsers)
+                <flux:sidebar.item icon="users" :href="route('tenant.users.index')" :current="request()->routeIs('tenant.users.*')" wire:navigate>
+                    {{ __('Users') }}
+                </flux:sidebar.item>
+                @endcan
             </flux:sidebar.nav>
 
             <flux:sidebar.spacer />
 
             <flux:sidebar.nav>
+                @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
                 <flux:sidebar.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
                     {{ __('Configuration') }}
                 </flux:sidebar.item>
+                @endcan
             </flux:sidebar.nav>
 
             <!-- Desktop User Menu -->

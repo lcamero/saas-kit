@@ -22,18 +22,24 @@ foreach (config('tenancy.central_domains') as $domain) {
             Route::get('dashboard', DashboardController::class)
                 ->name('dashboard');
 
-            Route::redirect('settings', 'settings/general');
+            Route::redirect('settings', '/settings/profile');
 
             // General settings
             Volt::route('settings/general', 'settings.general')->name('settings.general');
-    
+
             // Personal preferences
             Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
             Volt::route('settings/authentication', 'settings.authentication')->name('settings.authentication');
             Volt::route('settings/api-tokens', 'settings.api-tokens')->name('settings.api-tokens');
 
-            Route::name('tenants.')->group(function () {
-                Volt::route('tenants', 'tenants.index')->name('index');
+            Route::prefix('users')->name('users.')->middleware('can:'.\App\Enums\Permission::ManageApplicationUsers->value)->group(function () {
+                Volt::route('/', 'users.index')->name('index');
+                Volt::route('create', 'users.create')->name('create');
+                Volt::route('{userId}/edit', 'users.edit')->name('edit');
+            });
+
+            Route::prefix('tenants')->name('tenants.')->middleware('can:'.\App\Enums\Permission::ManageTenants->value)->group(function () {
+                Volt::route('/', 'tenants.index')->name('index');
                 Volt::route('create', 'tenants.create')->name('create');
                 Volt::route('{tenantId}/edit', 'tenants.edit')->name('edit');
             });

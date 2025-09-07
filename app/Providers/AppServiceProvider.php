@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use App\Enums\Role;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,10 +30,16 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(! app()->isProduction());
         Model::automaticallyEagerLoadRelationships();
 
-        RedirectIfAuthenticated::redirectUsing(function (Request $request) {
-            return tenant()
-                ? route('tenant.dashboard')
-                : route('dashboard');
+        // Implicitly grant "Administrator" role all permissions.
+        // This works in the app by using gate-related functions like auth()->user->can() and @can()
+        Gate::before(function (Authenticatable $user, $ability) {
+            return $user?->hasRole([\App\Enums\Tenant\Role::CentralAdministrator, Role::Administrator]) ? true : null;
         });
+
+        // Mostly when provisioning, the settings db does not exist yet
+        try {
+            config(['app.name' => app(\App\Settings\GeneralSettings::class)->application_name]);
+        } catch (\Exception $e) {
+        }
     }
 }
