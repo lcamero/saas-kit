@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(! app()->isProduction());
         Model::automaticallyEagerLoadRelationships();
 
-        // Implicitly grant __('general.administrator') role all permissions.
+        // Implicitly grant "Administrator" role all permissions.
         // This works in the app by using gate-related functions like auth()->user->can() and @can()
         Gate::before(function (Authenticatable $user, $ability) {
             return $user?->hasRole([\App\Enums\Tenant\Role::CentralAdministrator, Role::Administrator]) ? true : null;
