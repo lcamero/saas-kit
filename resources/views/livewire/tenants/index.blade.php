@@ -11,7 +11,7 @@ new class extends Component {
     #[Url] 
     public $search = '';
 
-    public ?string $tenantToDelete = null;
+    public ?string $tenantToDisable = null;
     public ?string $tenantLoginEmail = null;
 
     public function mount()
@@ -22,25 +22,31 @@ new class extends Component {
     #[Computed]
     public function tenants()
     {
-        return $this->search
-            ? Tenant::search($this->search)
+        return Tenant::search($this->search)
+                ->withTrashed()
                 ->query(fn ($query) => $query->latest())
-                ->paginate(10)
-            : Tenant::query()
-                ->latest()
-                ->paginate(10);
+                ->paginate();
     }
 
-    public function confirmTenantDeletion($tenantId): void
+    public function confirmTenantDisable($tenantId): void
     {
-        $this->tenantToDelete = $tenantId;
-        $this->dispatch('open-modal', 'confirm-tenant-deletion');
+        $this->tenantToDisable = $tenantId;
+        $this->dispatch('open-modal', 'confirm-tenant-disable');
     }
 
-    public function deleteTenant(): void
+    public function enableTenant($tenantId): void
     {
-        if ($this->tenantToDelete) {
-            $tenant = Tenant::findOrFail($this->tenantToDelete);
+        $tenant = Tenant::withTrashed()->findOrFail($tenantId);
+
+        $tenant->restore();
+
+        // $this->redirect(route('tenants.index'), navigate: true);
+    }
+
+    public function disableTenant(): void
+    {
+        if ($this->tenantToDisable) {
+            $tenant = Tenant::findOrFail($this->tenantToDisable);
             $tenant->delete();
         }
         
@@ -95,11 +101,19 @@ new class extends Component {
         
             <flux:table.rows>
                 @foreach ($this->tenants as $tenant)
-                    <flux:table.row :key="$tenant->id">    
-                        <flux:table.cell class="whitespace-nowrap" variant="strong">{{ $tenant->name }}</flux:table.cell>
+                    <flux:table.row :key="$tenant->id">
+                        <flux:table.cell class="whitespace-nowrap" variant="strong">
+                            {{ $tenant->name }}
+                            <flux:subheading size="sm" class="opacity-50">
+                                {{ $tenant->id }}
+                            </flux:subheading>
+                        </flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">{{ $tenant->email }}</flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">{{ $tenant->created_at }}</flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">
+                            @if($tenant->trashed())
+                            <flux:badge color="amber" size="sm">{{ __('Disabled') }}</flux:badge>
+                            @else
                             <flux:button.group>
                                 <flux:tooltip :content="$tenant->url" position="top">
                                     <flux:button wire:click="tenantLogin('{{ $tenant->id }}')" icon:trailing="arrow-up-right" size="sm">
@@ -110,10 +124,14 @@ new class extends Component {
                                     <flux:button icon="chevron-down" size="sm">
                                     </flux:button>
                                     <flux:popover class="w-72">
-                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('Optionally log in as a specific account')" :placeholder="__('admin@example.com')" type="email" size="sm" clearable />
+                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('Optionally log in as an existing account')" :placeholder="__('admin@example.com')" type="email" size="sm" clearable />
+                                        <flux:subheading size='sm' class="mt-2">
+                                            {{ __('Enter to login') }}
+                                        </flux:subheading>
                                     </flux:popover>
                                 </flux:dropdown>
                             </flux:button.group>
+                            @endif 
                         </flux:table.cell>
     
                         <flux:table.cell>
@@ -124,9 +142,14 @@ new class extends Component {
                                     <flux:menu.item icon="pencil-square" href="{{ route('tenants.edit', ['tenantId' => $tenant->id]) }}" wire:navigate>
                                         {{ __('Edit') }}
                                     </flux:menu.item>
-                                    <flux:modal.trigger name="confirm-tenant-deletion">
-                                        <flux:menu.item icon="trash" variant="danger" wire:click="confirmTenantDeletion('{{ $tenant->id }}')">{{ __('Delete') }}</flux:menu.item>
+                                    @unless($tenant->trashed())
+                                    <flux:modal.trigger name="confirm-tenant-disable">
+                                        <flux:menu.item icon="trash" variant="danger" wire:click="confirmTenantDisable('{{ $tenant->id }}')">{{ __('Delete') }}</flux:menu.item>
                                     </flux:modal.trigger>
+                                    @endunless
+                                    @if($tenant->trashed())
+                                    <flux:menu.item icon="arrow-left-end-on-rectangle" wire:click="enableTenant('{{ $tenant->id }}')">{{ __('Enable') }}</flux:menu.item>
+                                    @endif
                                 </flux:menu>
                             </flux:dropdown>
                         </flux:table.cell>
@@ -136,13 +159,16 @@ new class extends Component {
         </flux:table>
     </flux:card>
 
-    <flux:modal name="confirm-tenant-deletion" focusable class="max-w-lg">
-        <form method="POST" wire:submit="deleteTenant" class="space-y-6 p-6">
+    <flux:modal name="confirm-tenant-disable" focusable class="max-w-lg">
+        <form method="POST" wire:submit="disableTenant" class="space-y-6 p-6">
             <div>
                 <flux:heading size="lg">{{ __('Are you sure you want to delete this tenant?') }}</flux:heading>
 
                 <flux:subheading>
-                    {{ __('Once this tenant is deleted, all of its resources and data will be permanently deleted. This action cannot be undone') }}
+                    {{ __('Once this tenant is disabled, all of its resources and data will be disabled and users will lose access.') }}
+                </flux:subheading>
+                <flux:subheading>
+                    {{ __('Proceed with caution.') }}
                 </flux:subheading>
             </div>
 
@@ -151,7 +177,7 @@ new class extends Component {
                     <flux:button variant="filled">{{ __('Cancel') }}</flux:button>
                 </flux:modal.close>
 
-                <flux:button variant="danger" type="submit">{{ __('Delete tenant') }}</flux:button>
+                <flux:button variant="danger" type="submit">{{ __('Disable tenant') }}</flux:button>
             </div>
         </form>
     </flux:modal>
