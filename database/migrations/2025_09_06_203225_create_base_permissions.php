@@ -42,7 +42,7 @@ return new class extends Migration
         if (! app()->environment('production')) {
             $admininistrator = User::create([
                 'name' => 'Admini Strator',
-                'email' => __('auth.admin_example_com'),
+                'email' => config('settings.provision_admin_email'),
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]);

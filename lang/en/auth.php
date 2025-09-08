@@ -31,7 +31,6 @@ return [
     'please_enter_new_password' => 'Please enter your new password below',
     'reset_password' => 'Reset password',
     'resend_verification_email' => 'Resend verification email',
-    'admin_example_com' => 'admin@example.com',
     'enter_to_login' => 'Enter to login',
     'optionally_log_in_as_an_existing_account' => 'Optionally log in as an existing account',
 ];

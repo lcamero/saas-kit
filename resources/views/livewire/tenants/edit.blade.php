@@ -24,7 +24,7 @@ new class extends Component {
 
     public function mount($tenantId)
     {
-        $this->authorize(\App\Enums\Tenant\Permission::ManageApplicationUsers);
+        $this->authorize(\App\Enums\Permission::ManageTenants);
 
         $this->tenantId = $tenantId;
 

@@ -49,7 +49,7 @@ For the time being you may reference the base setup in base kit documentation [S
 ### Current Differences from base Starter Kit
 
 - Removed [Laravel Pulse][https://laravel.com/docs/12.x/pulse]. This package is removed from the installation as it provides less value out of the box in the multi-tenant model this kit uses. Some configuration changes can be applied to resolve users per tenant and show the information in the cards, but it is probably more work to get everything setup properly than the use it'll get at the moment. Also, other tools can be used to track performance and usage
-- In relation to [Spatie Laravel Permission](https://github.com/spatie/laravel-permission), the main difference is that on tenant creation, the administrator account is created with a random password instead of a static one. This is meant to be used along with user impersonation, so for the most part the password does not need to be known. The central app does get an administrator account with a known password.
+- In relation to [Spatie Laravel Permission](https://github.com/spatie/laravel-permission), the main difference is that on tenant creation, the administrator account is created with a random password instead of a static one. This is meant to be used along with user impersonation, so for the most part the password does not need to be known. The central app does get an administrator account with a known password. The tenant administrator account receives the email defined in `config/tenancy.php` under 'provision_admin_email`. It uses the value from the `.env` variable `TENANCY_PROVISION_ADMIN_EMAIL` or a default.
 
 ## Packages
 

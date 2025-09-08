@@ -14,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\TenantUserFactory> */
+    /** @use HasFactory<\Database\Factories\Tenant\UserFactory> */
     use HasApiTokens, HasFactory, HasRoles, Notifiable, Searchable;
 
     protected $connection = 'tenant'; // tenancy will swap this automatically

@@ -45,7 +45,7 @@ class TenancyServiceProvider extends ServiceProvider
 
                 ])->send(function (Events\TenantCreated $event) {
                     return $event->tenant;
-                })->shouldBeQueued(true), // `false` by default, but you probably want to make this `true` for production.
+                })->shouldBeQueued(app()->isProduction()), // `false` by default, but you probably want to make this `true` for production.
             ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
@@ -53,11 +53,11 @@ class TenancyServiceProvider extends ServiceProvider
             Events\TenantUpdated::class => [],
             Events\DeletingTenant::class => [],
             Events\TenantDeleted::class => [
-                JobPipeline::make([
-                    // Jobs\DeleteDatabase::class, // <-- disabled as we soft delete tenants. We also may want to keep the database and delete later
-                ])->send(function (Events\TenantDeleted $event) {
+                JobPipeline::make(array_values(array_filter([
+                    app()->environment('testing') ? Jobs\DeleteDatabase::class : null, // <-- disabled as we soft delete tenants. We also may want to keep the database and delete later. DELETE when testing
+                ])))->send(function (Events\TenantDeleted $event) {
                     return $event->tenant;
-                })->shouldBeQueued(true), // `false` by default, but you probably want to make this `true` for production.
+                })->shouldBeQueued(app()->isProduction()), // `false` by default, but you probably want to make this `true` for production.
             ],
 
             // Domain events
@@ -90,6 +90,11 @@ class TenancyServiceProvider extends ServiceProvider
                 function (Events\TenancyEnded $event) {
                     $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
                     $permissionRegistrar->cacheKey = 'spatie.permission.cache';
+
+                    config(['app.name' => config('central.app.name')]);
+                    config(['auth.defaults.guard' => 'web']);
+                    config(['scout.prefix' => '']);
+                    config(['settings.cache.prefix' => null]);
                 },
             ],
 
@@ -98,6 +103,8 @@ class TenancyServiceProvider extends ServiceProvider
                 function (Events\TenancyBootstrapped $event) {
                     config(['auth.defaults.guard' => 'tenant']);
 
+                    // Set a back up of the name at runtime
+                    config(['central.app.name' => config('app.name')]);
                     // Mostly when provisioning, the settings db does not exist yet
                     try {
                         config(['app.name' => app(\App\Settings\Tenant\GeneralSettings::class)->application_name]);

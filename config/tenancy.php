@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Stancl\Tenancy\Database\Models\Domain;
-
 return [
     'tenant_model' => \App\Models\Tenant::class,
     'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
@@ -13,7 +11,7 @@ return [
      */
     'job_tags_prefix' => 'tenants:',
 
-    'domain_model' => Domain::class,
+    'domain_model' => \App\Models\Domain::class,
 
     /**
      * The list of domains hosting your central app.
@@ -32,6 +30,12 @@ return [
      * \App\Http\Middleware\InitializeTenancy::class
      */
     'identification_handler' => Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain::class,
+
+    /**
+     * Tenants get provisioned with a CentralAdministrator user that cannot be deleted so you can
+     * impersonate it if desired. You may define what the email used for it is here.
+     */
+    'provision_admin_email' => env('TENANCY_PROVISION_ADMIN_EMAIL', 'admin@example.com'),
 
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.

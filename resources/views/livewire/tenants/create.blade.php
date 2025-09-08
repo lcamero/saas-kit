@@ -17,7 +17,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->authorize(\App\Enums\Tenant\Permission::ManageApplicationUsers);
+        $this->authorize(\App\Enums\Permission::ManageTenants);
     }
 
     public function create(): void

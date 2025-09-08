@@ -16,7 +16,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->authorize(\App\Enums\Tenant\Permission::ManageApplicationUsers);
+        $this->authorize(\App\Enums\Permission::ManageTenants);
     }
 
     #[Computed]
@@ -40,7 +40,7 @@ new class extends Component {
 
         $tenant->restore();
 
-        // $this->redirect(route('tenants.index'), navigate: true);
+        $this->redirect(route('tenants.index'), navigate: true);
     }
 
     public function disableTenant(): void
@@ -124,7 +124,7 @@ new class extends Component {
                                     <flux:button icon="chevron-down" size="sm">
                                     </flux:button>
                                     <flux:popover class="w-72">
-                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('auth.optionally_log_in_as_an_existing_account')" :placeholder="__('auth.admin_example_com')" type="email" size="sm" clearable />
+                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('auth.optionally_log_in_as_an_existing_account')" :placeholder="config('tenancy.provision_admin_email')" type="email" size="sm" clearable />
                                         <flux:subheading size='sm' class="mt-2">
                                             {{ __('auth.enter_to_login') }}
                                         </flux:subheading>

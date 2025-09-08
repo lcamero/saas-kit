@@ -25,7 +25,9 @@ foreach (config('tenancy.central_domains') as $domain) {
             Route::redirect('settings', '/settings/profile');
 
             // General settings
-            Volt::route('settings/general', 'settings.general')->name('settings.general');
+            Volt::route('settings/general', 'settings.general')
+                ->can(\App\Enums\Permission::ManageApplicationSettings)
+                ->name('settings.general');
 
             // Personal preferences
             Volt::route('settings/profile', 'settings.profile')->name('settings.profile');

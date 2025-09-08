@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
@@ -12,7 +13,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant implements TenantWithDatabase
 {
-    use HasDatabase, HasDomains, Searchable, SoftDeletes;
+    use HasDatabase, HasDomains, HasFactory, Searchable, SoftDeletes;
 
     protected $with = [
         'domains',

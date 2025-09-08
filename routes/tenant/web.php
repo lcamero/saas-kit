@@ -37,7 +37,9 @@ Route::middleware([
         Route::redirect('settings', '/settings/profile');
 
         // General settings
-        Volt::route('settings/general', 'tenant.settings.general')->name('settings.general');
+        Volt::route('settings/general', 'tenant.settings.general')
+            ->can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
+            ->name('settings.general');
 
         // Personal preferences
         Volt::route('settings/profile', 'tenant.settings.profile')->name('settings.profile');
