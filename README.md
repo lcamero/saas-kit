@@ -78,6 +78,8 @@ You just need to modify the configuration in `config/tenancy.php` by changing th
 
 As stated above, this kit is configured with a multi-database tenancy model, identifying tenants by subdomains. Some other pieces of the kit have been configured in order to work properly with some of the included packages.
 
+Tenant models are configured to be soft deleted in case you just need to manage enabling and disabling them. This make databases remain after deletion so keep that in mind if you would like a different behavior.
+
 Some specific configurations you will find in the kit includes:
 
 ###### Routes
