@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Jobs\DeleteFrameworkDirectoriesForTenant;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -51,7 +52,13 @@ class TenancyServiceProvider extends ServiceProvider
             Events\TenantSaved::class => [],
             Events\UpdatingTenant::class => [],
             Events\TenantUpdated::class => [],
-            Events\DeletingTenant::class => [],
+            Events\DeletingTenant::class => [
+                JobPipeline::make([
+                    DeleteFrameworkDirectoriesForTenant::class,
+                ])->send(function (Events\DeletingTenant $event) {
+                    return $event->tenant;
+                })->shouldBeQueued(app()->isProduction()), // `false` by default, but you probably want to make this `true` for production.
+            ],
             Events\TenantDeleted::class => [
                 JobPipeline::make(array_values(array_filter([
                     app()->environment('testing') ? Jobs\DeleteDatabase::class : null, // <-- disabled as we soft delete tenants. We also may want to keep the database and delete later. DELETE when testing
