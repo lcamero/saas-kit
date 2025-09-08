@@ -9,5 +9,4 @@ return [
     'are_you_sure_you_want_to_delete_tenant' => 'Are you sure you want to delete this tenant?',
     'once_disabled_users_will_lose_access' => 'Once this tenant is disabled, all of its resources and data will be disabled and users will lose access.',
     'tenants' => 'Tenants',
-    'manage_tenants' => 'Manage Tenants',
 ];

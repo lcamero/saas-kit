@@ -124,9 +124,9 @@ new class extends Component {
                                     <flux:button icon="chevron-down" size="sm">
                                     </flux:button>
                                     <flux:popover class="w-72">
-                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('forms.optionally_log_in_as_an_existing_account')" :placeholder="__('forms.admin_example_com')" type="email" size="sm" clearable />
+                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('auth.optionally_log_in_as_an_existing_account')" :placeholder="__('auth.admin_example_com')" type="email" size="sm" clearable />
                                         <flux:subheading size='sm' class="mt-2">
-                                            {{ __('forms.enter_to_login') }}
+                                            {{ __('auth.enter_to_login') }}
                                         </flux:subheading>
                                     </flux:popover>
                                 </flux:dropdown>

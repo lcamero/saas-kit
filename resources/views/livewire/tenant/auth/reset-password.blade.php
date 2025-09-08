@@ -69,7 +69,7 @@ new #[Layout('components.tenant.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('forms.reset_password')" :description="__('forms.please_enter_new_password')" />
+    <x-auth-header :title="__('auth.reset_password')" :description="__('auth.please_enter_new_password')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
@@ -108,7 +108,7 @@ new #[Layout('components.tenant.layouts.auth')] class extends Component {
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('forms.reset_password') }}
+                {{ __('auth.reset_password') }}
             </flux:button>
         </div>
     </form>

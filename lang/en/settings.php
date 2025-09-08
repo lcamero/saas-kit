@@ -2,8 +2,10 @@
 
 return [
     'manage_application_settings' => 'Manage Application Settings',
+    'manage_application_users' => 'Manage Application Users',
     'manage_personal_preferences_and_application_configuration' => 'Manage your personal preferences and application configuration',
     'manage_general_system_settings' => 'Manage general system settings',
+    'manage_tenants' => 'Manage Tenants',
     'update_your_name_and_email_address' => 'Update your name and email address',
     'manage_account_password' => 'Manage your account password.',
     'delete_account' => 'Delete account',
