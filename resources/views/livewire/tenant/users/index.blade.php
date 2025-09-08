@@ -39,7 +39,7 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
             $user = User::findOrFail($this->userToDelete);
 
             if ($user->hasRole(\App\Enums\Tenant\Role::CentralAdministrator)) {
-                Flux::toast(__('You may not delete a central administrator account.'), variant: 'danger');
+                Flux::toast(__('user.you_may_not_delete_central_administrator'), variant: 'danger');
 
                 $this->redirect(route('tenant.users.index'), navigate: true);
 
@@ -56,23 +56,23 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
 <div>
     <div class="relative mb-6 w-full">
         <div class="flex justify-between items-center">
-            <flux:heading size="xl" level="1" class="mb-6">{{ __('Users') }}</flux:heading>
+            <flux:heading size="xl" level="1" class="mb-6">{{ __('navigation.users') }}</flux:heading>
             <flux:button :href="route('tenant.users.create')" variant="primary" size="sm">
-                {{ __('New user') }}
+                {{ __('user.new_user') }}
             </flux:button>
         </div>
         <flux:separator variant="subtle" />
     </div>
 
-    <flux:input icon="magnifying-glass" size="sm" :placeholder="__('Search')" wire:model.live.debounce.300ms="search" class="max-w-xs mb-6" />
+    <flux:input icon="magnifying-glass" size="sm" :placeholder="__('general.search')" wire:model.live.debounce.300ms="search" class="max-w-xs mb-6" />
 
     <flux:card>
         <flux:table :paginate="$this->users">
             <flux:table.columns>
-                <flux:table.column>{{ __('Name') }}</flux:table.column>
-                <flux:table.column>{{ __('Email') }}</flux:table.column>
-                <flux:table.column>{{ __('Created at') }}</flux:table.column>
-                <flux:table.column>{{ __('Roles') }}</flux:table.column>
+                <flux:table.column>{{ __('general.name') }}</flux:table.column>
+                <flux:table.column>{{ __('general.email') }}</flux:table.column>
+                <flux:table.column>{{ __('general.created_at') }}</flux:table.column>
+                <flux:table.column>{{ __('general.roles') }}</flux:table.column>
             </flux:table.columns>
 
             <flux:table.rows>
@@ -88,10 +88,10 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
     
                                 <flux:menu>
                                     <flux:menu.item icon="pencil-square" href="{{ route('tenant.users.edit', ['userId' => $user->id]) }}" wire:navigate>
-                                        {{ __('Edit') }}
+                                        {{ __('general.edit') }}
                                     </flux:menu.item>
                                     <flux:modal.trigger name="confirm-user-deletion">
-                                        <flux:menu.item icon="trash" variant="danger" wire:click="confirmUserDeletion('{{ $user->id }}')">{{ __('Delete') }}</flux:menu.item>
+                                        <flux:menu.item icon="trash" variant="danger" wire:click="confirmUserDeletion('{{ $user->id }}')">{{ __('general.delete') }}</flux:menu.item>
                                     </flux:modal.trigger>
                                 </flux:menu>
                             </flux:dropdown>
@@ -105,17 +105,17 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
     <flux:modal name="confirm-user-deletion" focusable class="max-w-lg">
         <form method="POST" wire:submit="deleteUser" class="space-y-6 p-6">
             <div>
-                <flux:heading size="lg">{{ __('Are you sure you want to delete this user?') }}</flux:heading>
+                <flux:heading size="lg">{{ __('user.are_you_sure_you_want_to_delete_user') }}</flux:heading>
 
                 <flux:subheading>
-                    {{ __('Once this user is deleted, all of its resources and data will be permanently deleted. This action cannot be undone') }}
+                    {{ __('user.once_deleted_all_resources_cannot_be_undone') }}
                 </flux:subheading>
 
                 @if(auth()->user()->id === $userToDelete)
                 <flux:callout
                     variant="warning"
                     icon="exclamation-triangle"
-                    :heading="__('If you delete your account you will be logged out immediately.')"
+                    :heading="__('user.if_you_delete_your_account_you_will_be_logged_out')"
                     class="mt-6 text-sm!"
                 />
                 @endif
@@ -123,10 +123,10 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
 
             <div class="flex justify-end space-x-2 rtl:space-x-reverse">
                 <flux:modal.close>
-                    <flux:button variant="filled">{{ __('Cancel') }}</flux:button>
+                    <flux:button variant="filled">{{ __('general.cancel') }}</flux:button>
                 </flux:modal.close>
 
-                <flux:button variant="danger" type="submit">{{ __('Delete user') }}</flux:button>
+                <flux:button variant="danger" type="submit">{{ __('user.delete_user') }}</flux:button>
             </div>
         </form>
     </flux:modal>

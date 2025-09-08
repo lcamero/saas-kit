@@ -10,8 +10,8 @@ enum Role: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::CentralAdministrator => __('Central Administrator'),
-            self::Administrator => __('Administrator'),
+            self::CentralAdministrator => __('general.central_administrator'),
+            self::Administrator => __('general.administrator'),
         };
     }
 }

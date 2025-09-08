@@ -11,9 +11,9 @@ enum Permission: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::ManageApplicationSettings => __('Manage Application Settings'),
-            self::ManageApplicationUsers => __('Manage Application Users'),
-            self::ManageTenants => __('Manage Tenants'),
+            self::ManageApplicationSettings => __('settings.manage_application_settings'),
+            self::ManageApplicationUsers => __('user.manage_application_users'),
+            self::ManageTenants => __('tenant.manage_tenants'),
         };
     }
 }

@@ -66,7 +66,7 @@ new class extends Component {
         });
 
         if (!$userId) {
-            Flux::toast(__('No user id found to login with'), variant: 'danger');
+            Flux::toast(__('tenant.no_user_id_found_to_login_with'), variant: 'danger');
             return;
         }
 
@@ -81,22 +81,22 @@ new class extends Component {
 <div>
     <div class="relative mb-6 w-full">
         <div class="flex justify-between items-center">
-            <flux:heading size="xl" level="1" class="mb-6">{{ __('Tenants') }}</flux:heading>
+            <flux:heading size="xl" level="1" class="mb-6">{{ __('tenant.tenants') }}</flux:heading>
             <flux:button :href="route('tenants.create')" variant="primary" size="sm">
-                {{ __('New tenant') }}
+                {{ __('tenant.new_tenant') }}
             </flux:button>
         </div>
         <flux:separator variant="subtle" />
     </div>
 
-    <flux:input icon="magnifying-glass" size="sm" :placeholder="__('Search')" wire:model.live.debounce.300ms="search" class="max-w-xs mb-6" />
+    <flux:input icon="magnifying-glass" size="sm" :placeholder="__('general.search')" wire:model.live.debounce.300ms="search" class="max-w-xs mb-6" />
 
     <flux:card class="w-full">
         <flux:table :paginate="$this->tenants">
             <flux:table.columns>
-                <flux:table.column>{{ __('Name') }}</flux:table.column>
-                <flux:table.column>{{ __('Email') }}</flux:table.column>
-                <flux:table.column>{{ __('Created at') }}</flux:table.column>
+                <flux:table.column>{{ __('general.name') }}</flux:table.column>
+                <flux:table.column>{{ __('general.email') }}</flux:table.column>
+                <flux:table.column>{{ __('general.created_at') }}</flux:table.column>
             </flux:table.columns>
         
             <flux:table.rows>
@@ -112,21 +112,21 @@ new class extends Component {
                         <flux:table.cell class="whitespace-nowrap">{{ $tenant->created_at }}</flux:table.cell>
                         <flux:table.cell class="whitespace-nowrap">
                             @if($tenant->trashed())
-                            <flux:badge color="amber" size="sm">{{ __('Disabled') }}</flux:badge>
+                            <flux:badge color="amber" size="sm">{{ __('general.disabled') }}</flux:badge>
                             @else
                             <flux:button.group>
                                 <flux:tooltip :content="$tenant->url" position="top">
                                     <flux:button wire:click="tenantLogin('{{ $tenant->id }}')" icon:trailing="arrow-up-right" size="sm">
-                                        {{ __('Login') }}
+                                        {{ __('general.login') }}
                                     </flux:button>
                                 </flux:tooltip>
                                 <flux:dropdown align="left">
                                     <flux:button icon="chevron-down" size="sm">
                                     </flux:button>
                                     <flux:popover class="w-72">
-                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('Optionally log in as an existing account')" :placeholder="__('admin@example.com')" type="email" size="sm" clearable />
+                                        <flux:input wire:model="tenantLoginEmail" wire:keyup.enter="tenantLogin('{{ $tenant->id }}')" :label="__('forms.optionally_log_in_as_an_existing_account')" :placeholder="__('forms.admin_example_com')" type="email" size="sm" clearable />
                                         <flux:subheading size='sm' class="mt-2">
-                                            {{ __('Enter to login') }}
+                                            {{ __('forms.enter_to_login') }}
                                         </flux:subheading>
                                     </flux:popover>
                                 </flux:dropdown>
@@ -140,15 +140,15 @@ new class extends Component {
     
                                 <flux:menu>
                                     <flux:menu.item icon="pencil-square" href="{{ route('tenants.edit', ['tenantId' => $tenant->id]) }}" wire:navigate>
-                                        {{ __('Edit') }}
+                                        {{ __('general.edit') }}
                                     </flux:menu.item>
                                     @unless($tenant->trashed())
                                     <flux:modal.trigger name="confirm-tenant-disable">
-                                        <flux:menu.item icon="trash" variant="danger" wire:click="confirmTenantDisable('{{ $tenant->id }}')">{{ __('Delete') }}</flux:menu.item>
+                                        <flux:menu.item icon="trash" variant="danger" wire:click="confirmTenantDisable('{{ $tenant->id }}')">{{ __('general.delete') }}</flux:menu.item>
                                     </flux:modal.trigger>
                                     @endunless
                                     @if($tenant->trashed())
-                                    <flux:menu.item icon="arrow-left-end-on-rectangle" wire:click="enableTenant('{{ $tenant->id }}')">{{ __('Enable') }}</flux:menu.item>
+                                    <flux:menu.item icon="arrow-left-end-on-rectangle" wire:click="enableTenant('{{ $tenant->id }}')">{{ __('general.enable') }}</flux:menu.item>
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>
@@ -162,22 +162,22 @@ new class extends Component {
     <flux:modal name="confirm-tenant-disable" focusable class="max-w-lg">
         <form method="POST" wire:submit="disableTenant" class="space-y-6 p-6">
             <div>
-                <flux:heading size="lg">{{ __('Are you sure you want to delete this tenant?') }}</flux:heading>
+                <flux:heading size="lg">{{ __('tenant.are_you_sure_you_want_to_delete_tenant') }}</flux:heading>
 
                 <flux:subheading>
-                    {{ __('Once this tenant is disabled, all of its resources and data will be disabled and users will lose access.') }}
+                    {{ __('tenant.once_disabled_users_will_lose_access') }}
                 </flux:subheading>
                 <flux:subheading>
-                    {{ __('Proceed with caution.') }}
+                    {{ __('general.proceed_with_caution') }}
                 </flux:subheading>
             </div>
 
             <div class="flex justify-end space-x-2 rtl:space-x-reverse">
                 <flux:modal.close>
-                    <flux:button variant="filled">{{ __('Cancel') }}</flux:button>
+                    <flux:button variant="filled">{{ __('general.cancel') }}</flux:button>
                 </flux:modal.close>
 
-                <flux:button variant="danger" type="submit">{{ __('Disable tenant') }}</flux:button>
+                <flux:button variant="danger" type="submit">{{ __('tenant.disable_tenant') }}</flux:button>
             </div>
         </form>
     </flux:modal>

@@ -59,18 +59,18 @@ new class extends Component {
 <div>
     <form wire:submit="update" class="space-y-4">
         <div class="space-y-12">
-            <flux:heading size="xl">{{ __('Update User') }}</flux:heading>
+            <flux:heading size="xl">{{ __('user.update_user') }}</flux:heading>
             <flux:card class="w-full lg:w-4/5">
                 <div class="grid grid-cols-2 gap-y-6">
-                    <flux:input :label="__('Name')" wire:model="name" class="max-w-sm" required :badge="__('Required')" />
-                    <flux:input :label="__('Email')" wire:model="email" class="max-w-sm" type="email" required :badge="__('Required')" />
-                    <flux:checkbox.group wire:model="roles" :label="__('Roles')">
+                    <flux:input :label="__('general.name')" wire:model="name" class="max-w-sm" required :badge="__('general.required')" />
+                    <flux:input :label="__('general.email')" wire:model="email" class="max-w-sm" type="email" required :badge="__('general.required')" />
+                    <flux:checkbox.group wire:model="roles" :label="__('general.roles')">
                         <flux:checkbox :value="\App\Enums\Role::Administrator->value" :label="\App\Enums\Role::Administrator->getLabel()"></flux:checkbox>
                     </flux:checkbox.group>
                 </div>
             </flux:card>
             <flux:button type="submit" variant="primary">
-                {{ __('Update User') }}
+                {{ __('user.update_user') }}
             </flux:button>
         </div>
     </form>

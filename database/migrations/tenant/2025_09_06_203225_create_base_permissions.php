@@ -45,7 +45,7 @@ return new class extends Migration
         // Seed your first administrator
         $admininistrator = User::create([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => __('forms.admin_example_com'),
             'password' => Hash::make(Str::random(16)),
             'email_verified_at' => now(),
         ]);

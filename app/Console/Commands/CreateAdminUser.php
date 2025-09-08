@@ -28,12 +28,12 @@ class CreateAdminUser extends Command
 
     public function handle(): int
     {
-        $name = $this->option('name') ?? $this->ask('Name');
-        $email = $this->option('email') ?? $this->ask('Email');
+        $name = $this->option('name') ?? $this->ask(__('general.name'));
+        $email = $this->option('email') ?? $this->ask(__('general.email'));
         $password = $this->option('password');
 
         if (! $password) {
-            $password = $this->secret('Password');
+            $password = $this->secret(__('general.password'));
             $confirm = $this->secret('Confirm Password');
 
             if ($password !== $confirm) {

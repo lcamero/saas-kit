@@ -20,13 +20,13 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:sidebar.item>
+                <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('general.dashboard') }}</flux:sidebar.item>
                 @can(\App\Enums\Permission::ManageTenants)
-                <flux:sidebar.item icon="square-3-stack-3d" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>{{ __('Tenants') }}</flux:sidebar.item>
+                <flux:sidebar.item icon="square-3-stack-3d" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>{{ __('navigation.tenants') }}</flux:sidebar.item>
                 @endcan
                 @can(\App\Enums\Permission::ManageApplicationUsers)
                 <flux:sidebar.item icon="users" :href="route('users.index')" :current="request()->routeIs('users.*')" wire:navigate>
-                    {{ __('Users') }}
+                    {{ __('navigation.users') }}
                 </flux:sidebar.item>
                 @endcan
             </flux:sidebar.nav>
@@ -36,16 +36,16 @@
             <flux:sidebar.nav>
                 @if (app()->isLocal())
                     <flux:sidebar.item icon="folder-git-2" href="https://github.com/lcamero/saas-kit" target="_blank">
-                    {{ __('Repository') }}
+                    {{ __('general.repository') }}
                     </flux:sidebar.item>
 
                     <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs" target="_blank">
-                    {{ __('Documentation') }}
+                    {{ __('general.documentation') }}
                     </flux:sidebar.item>
                 @endif
                 @can(\App\Enums\Permission::ManageApplicationSettings)
                 <flux:sidebar.item icon="wrench-screwdriver" :href="route('settings.general')" :current="request()->routeIs('settings.general')" wire:navigate>
-                    {{ __('Configuration') }}
+                    {{ __('navigation.configuration') }}
                 </flux:sidebar.item>
                 @endcan
             </flux:sidebar.nav>
@@ -90,17 +90,17 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Preferences') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('navigation.preferences') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
                         @if (Route::has('horizon.index'))
-                        <flux:menu.item :href="route('horizon.index')" target="_blank" icon="circle-stack">{{ __('Horizon') }}</flux:menu.item>
+                        <flux:menu.item :href="route('horizon.index')" target="_blank" icon="circle-stack">{{ __('navigation.horizon') }}</flux:menu.item>
                         @endif
                         @if (Route::has('telescope') && config('telescope.enabled'))
-                        <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('Telescope') }}</flux:menu.item>
+                        <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('navigation.telescope') }}</flux:menu.item>
                         @endif
                     </flux:menu.radio.group>
 
@@ -109,7 +109,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('general.log_out') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>
@@ -160,17 +160,17 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Preferences') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('navigation.preferences') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
                         @if (Route::has('horizon.index'))
-                        <flux:menu.item :href="route('horizon.index')" target="_blank" icon="circle-stack">{{ __('Horizon') }}</flux:menu.item>
+                        <flux:menu.item :href="route('horizon.index')" target="_blank" icon="circle-stack">{{ __('navigation.horizon') }}</flux:menu.item>
                         @endif
                         @if (Route::has('telescope') && config('telescope.enabled'))
-                        <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('Telescope') }}</flux:menu.item>
+                        <flux:menu.item :href="route('telescope')" target="_blank" icon="lifebuoy">{{ __('navigation.telescope') }}</flux:menu.item>
                         @endif
                     </flux:menu.radio.group>
 
@@ -179,7 +179,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('general.log_out') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>

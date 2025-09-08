@@ -53,13 +53,13 @@ new class extends Component {
 <div>
     <form wire:submit="update" class="space-y-4">
         <div class="space-y-12">
-            <flux:heading size="xl">{{ __('Update Tenant') }}</flux:heading>
+            <flux:heading size="xl">{{ __('tenant.update_tenant') }}</flux:heading>
             <flux:card class="w-full lg:w-4/5">
                 <div class="grid grid-cols-2 gap-y-6">
-                    <flux:input :label="__('Name')" wire:model="name" class="max-w-sm" required :badge="__('Required')" />
-                    <flux:input :label="__('Email')" wire:model="email" class="max-w-sm" type="email" required :badge="__('Required')" />
+                    <flux:input :label="__(__('general.name'))" wire:model="name" class="max-w-sm" required :badge="__('general.required')" />
+                    <flux:input :label="__(__('general.email'))" wire:model="email" class="max-w-sm" type="email" required :badge="__('general.required')" />
                     <flux:field>
-                        <flux:label :badge="__('Required')">{{ __('Domain') }}</flux:label>
+                        <flux:label :badge="__('general.required')">{{ __('general.domain') }}</flux:label>
                         <flux:input.group>
                             <flux:input wire:model="domain" class="col-span-2 max-w-sm" required />
                             <flux:input.group.suffix>.{{ parse_url(config('app.url'))['host'] }}</flux:input.group.suffix>
@@ -69,7 +69,7 @@ new class extends Component {
                 </div>
             </flux:card>
             <flux:button type="submit" variant="primary">
-                {{ __('Update Tenant') }}
+                {{ __('tenant.update_tenant') }}
             </flux:button>
         </div>
     </form>

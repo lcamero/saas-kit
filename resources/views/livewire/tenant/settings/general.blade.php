@@ -36,20 +36,20 @@ new #[Layout('components.tenant.layouts.app')] class extends Component {
 
         $generalSettings->save();
 
-        Flux::toast(__('Your changes have been saved.'), variant: 'success');
+        Flux::toast(__('settings.your_changes_have_been_saved'), variant: 'success');
 
         $this->redirect(route('tenant.settings.general'), navigate: true);
     }
 }; ?>
 
 <section class="w-full">
-    <x-tenant.settings.layout :heading="__('General')" :subheading="__('Manage general system settings')">
+    <x-tenant.settings.layout :heading="__('general.general')" :subheading="__('settings.manage_general_system_settings')">
         <form wire:submit="update" class="my-6 w-full space-y-6">
-            <flux:input wire:model="application_name" :label="__('Application Name')" type="text" required autofocus autocomplete="application_name" />
+            <flux:input wire:model="application_name" :label="__('general.application_name')" type="text" required autofocus autocomplete="application_name" />
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
+                    <flux:button variant="primary" type="submit" class="w-full">{{ __('general.save') }}</flux:button>
                 </div>
             </div>
         </form>

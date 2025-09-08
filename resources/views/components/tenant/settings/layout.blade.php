@@ -1,19 +1,19 @@
 <div>
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">{{ __('Settings') }}</flux:heading>
-        <flux:subheading size="lg" class="mb-6">{{ __('Manage your personal preferences and application configuration') }}</flux:subheading>
+        <flux:heading size="xl" level="1">{{ __('general.settings') }}</flux:heading>
+        <flux:subheading size="lg" class="mb-6">{{ __('settings.manage_personal_preferences_and_application_configuration') }}</flux:subheading>
         <flux:separator variant="subtle" />
     </div>
 
-    <flux:heading class="lg:hidden mt-2">{{ __('Select category') }}</flux:heading>
+    <flux:heading class="lg:hidden mt-2">{{ __('general.select_category') }}</flux:heading>
     <flux:select class="w-full max-w-sm lg:hidden mt-2" x-on:change="Livewire.navigate($event.target.value)">
         @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
-        <flux:select.option value="{{ route('tenant.settings.general', absolute: false) }}" :selected="request()->routeIs('tenant.settings.general')">{{ __('General') }}</flux:select.option>
+        <flux:select.option value="{{ route('tenant.settings.general', absolute: false) }}" :selected="request()->routeIs('tenant.settings.general')">{{ __('general.general') }}</flux:select.option>
         @endcan
-        <flux:select.option value="{{ route('tenant.settings.profile', absolute: false) }}" :selected="request()->routeIs('tenant.settings.profile')">{{ __('Profile') }}</flux:select.option>
-        <flux:select.option value="{{ route('tenant.settings.authentication', absolute: false) }}" :selected="request()->routeIs('tenant.settings.authentication')">{{ __('Authentication') }}</flux:select.option>
+        <flux:select.option value="{{ route('tenant.settings.profile', absolute: false) }}" :selected="request()->routeIs('tenant.settings.profile')">{{ __('general.profile') }}</flux:select.option>
+        <flux:select.option value="{{ route('tenant.settings.authentication', absolute: false) }}" :selected="request()->routeIs('tenant.settings.authentication')">{{ __('general.authentication') }}</flux:select.option>
         @if (\App\Auth\Sanctum::apiTokensEnabled())
-        <flux:select.option value="{{ route('tenant.settings.api-tokens', absolute: false) }}" :selected="request()->routeIs('tenant.settings.api-tokens')">{{ __('API Tokens') }}</flux:select.option>
+        <flux:select.option value="{{ route('tenant.settings.api-tokens', absolute: false) }}" :selected="request()->routeIs('tenant.settings.api-tokens')">{{ __('general.api_tokens') }}</flux:select.option>
         @endif
     </flux:select>
     
@@ -22,11 +22,11 @@
             @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
             <div class="relative w-full mb-6 flex items-center gap-1">
                 <flux:icon.wrench-screwdriver class="size-4" />
-                <flux:heading size="lg" level="2">{{ __('Application Configuration') }}</flux:heading>
+                <flux:heading size="lg" level="2">{{ __('general.application_configuration') }}</flux:heading>
             </div>
             <div class="me-10 w-full pb-4 md:w-[220px]">
                 <flux:navlist>
-                    <flux:navlist.item :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>{{ __('General') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>{{ __('general.general') }}</flux:navlist.item>
                 </flux:navlist>
             </div>
 
@@ -35,14 +35,14 @@
 
             <div class="relative w-full mb-6 flex items-center gap-1">
                 <flux:icon.cog class="size-4" />
-                <flux:heading size="lg" level="2">{{ __('Personal Preferences') }}</flux:heading>
+                <flux:heading size="lg" level="2">{{ __('general.personal_preferences') }}</flux:heading>
             </div>
             <div class="me-10 w-full pb-4 md:w-[220px]">
                 <flux:navlist>
-                    <flux:navlist.item :href="route('tenant.settings.profile')" :current="request()->routeIs('tenant.settings.profile')" wire:navigate>{{ __('Profile') }}</flux:navlist.item>
-                    <flux:navlist.item :href="route('tenant.settings.authentication')" :current="request()->routeIs('tenant.settings.authentication')" wire:navigate>{{ __('Authentication') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('tenant.settings.profile')" :current="request()->routeIs('tenant.settings.profile')" wire:navigate>{{ __('general.profile') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('tenant.settings.authentication')" :current="request()->routeIs('tenant.settings.authentication')" wire:navigate>{{ __('general.authentication') }}</flux:navlist.item>
                     @if (\App\Auth\Sanctum::apiTokensEnabled())
-                    <flux:navlist.item :href="route('tenant.settings.api-tokens')" :current="request()->routeIs('tenant.settings.api-tokens')" wire:navigate>{{ __('API Tokens') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('tenant.settings.api-tokens')" :current="request()->routeIs('tenant.settings.api-tokens')" wire:navigate>{{ __('general.api_tokens') }}</flux:navlist.item>
                     @endif
                 </flux:navlist>
             </div>

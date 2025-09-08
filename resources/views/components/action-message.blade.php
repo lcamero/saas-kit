@@ -10,5 +10,5 @@
     style="display: none"
     {{ $attributes->merge(['class' => 'text-sm']) }}
 >
-    {{ $slot->isEmpty() ? __('Saved.') : $slot }}
+    {{ $slot->isEmpty() ? __(__('general.saved')) : $slot }}
 </div>

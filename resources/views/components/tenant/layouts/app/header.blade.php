@@ -21,16 +21,16 @@
 
             <flux:navbar class="-mb-px max-lg:hidden">
                 <flux:navbar.item icon="layout-grid" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
+                    {{ __('general.dashboard') }}
                 </flux:navbar.item>
                 @can(\App\Enums\Tenant\Permission::ManageApplicationUsers)
                 <flux:navbar.item icon="users" :href="route('tenant.users.index')" :current="request()->routeIs('tenant.users.*')" wire:navigate>
-                    {{ __('Users') }}
+                    {{ __('navigation.users') }}
                 </flux:navbar.item>
                 @endcan
                 @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
                 <flux:navbar.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
-                    {{ __('Configuration') }}
+                    {{ __('navigation.configuration') }}
                 </flux:navbar.item>
                 @endcan
             </flux:navbar>
@@ -76,7 +76,7 @@
                     <flux:menu.separator />
                     
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('tenant.settings.profile')" icon="cog" wire:navigate>{{ __('Preferences') }}</flux:menu.item>
+                        <flux:menu.item :href="route('tenant.settings.profile')" icon="cog" wire:navigate>{{ __('navigation.preferences') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -84,7 +84,7 @@
                     <form method="POST" action="{{ route('tenant.logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('general.log_out') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>
@@ -109,11 +109,11 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group>
                     <flux:navlist.item icon="layout-grid" :href="route('tenant.dashboard')" :current="request()->routeIs('tenant.dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
+                    {{ __('general.dashboard') }}
                     </flux:navlist.item>
                     @can(\App\Enums\Tenant\Permission::ManageApplicationUsers)
                     <flux:navlist.item icon="users" :href="route('tenant.users.index')" :current="request()->routeIs('tenant.users.*')" wire:navigate>
-                        {{ __('Users') }}
+                        {{ __('navigation.users') }}
                     </flux:navlist.item>
                     @endcan
                 </flux:navlist.group>
@@ -124,7 +124,7 @@
             <flux:navlist variant="outline">
                 @can(\App\Enums\Tenant\Permission::ManageApplicationSettings)
                 <flux:navlist.item icon="wrench-screwdriver" :href="route('tenant.settings.general')" :current="request()->routeIs('tenant.settings.general')" wire:navigate>
-                    {{ __('Configuration') }}
+                    {{ __('navigation.configuration') }}
                 </flux:navlist.item>
                 @endcan
             </flux:navlist>
