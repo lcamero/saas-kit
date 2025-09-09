@@ -20,12 +20,6 @@ Or, if you prefer, use the composer create-project command instead
 composer create-project lcamero/saas-kit
 ```
 
-You will be asked if you wish to install a Flux UI pro license after the project is created so it configures it right away. Otherwise, you may activate it later with the following command
-
-```bash
-php artisan flux:activate
-```
-
 Run migrations with
 
 ```bash
@@ -45,6 +39,16 @@ This will run vite to serve your asset and listen for changes (`npm run dev`), r
 ## Setup
 
 For the time being you may reference the base setup in base kit documentation [Setup](https://github.com/lcamero/laravel-starter-kit?tab=readme-ov-file#setup). Any additional steps will be listed below.
+
+### Configure Livewire Flux UI Pro
+
+You need to provide your license information to activate the pro license with the following command:
+
+```bash
+php artisan flux:activate
+```
+
+More information can be found in the [Flux UI Docs](https://fluxui.dev/docs/installation#getting-started)
 
 ### Current Differences from base Starter Kit
 
