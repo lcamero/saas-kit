@@ -17,10 +17,13 @@ return [
      * The list of domains hosting your central app.
      *
      * Only relevant if you're using the domain or subdomain identification middleware.
+     * 
+     * If you use multiple central domains you cannot use route names because different
+     * routes (= different combinations of domains & paths) can't share the same name.
      */
     'central_domains' => [
-        '127.0.0.1',
-        'localhost',
+        // '127.0.0.1',
+        // 'localhost',
         env('TENANCY_CENTRAL_DOMAIN', 'saas-kit.test'),
     ],
 
