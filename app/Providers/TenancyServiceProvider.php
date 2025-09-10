@@ -188,6 +188,23 @@ class TenancyServiceProvider extends ServiceProvider
 
             return [];
         });
+
+        \Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain::$onFail = function ($exception, $request, $next) {
+            if (\Stancl\Tenancy\Features\UniversalRoutes::routeHasMiddleware($request->route(), \Stancl\Tenancy\Features\UniversalRoutes::$middlewareGroup)) {
+                return $next($request);
+            }
+
+            return redirect()->to(config('app.url'));
+        };
+
+        \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::$onFail = function ($exception, $request, $next) {
+            if (\Stancl\Tenancy\Features\UniversalRoutes::routeHasMiddleware($request->route(), \Stancl\Tenancy\Features\UniversalRoutes::$middlewareGroup)) {
+                return $next($request);
+            }
+
+            return redirect()->to(config('app.url'));
+        };
+
     }
 
     protected function bootEvents()
